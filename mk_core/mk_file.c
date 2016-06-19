@@ -71,18 +71,14 @@ int mk_file_get_info(const char *path, struct file_info *f_info, int mode)
 
     /* Check read access */
     if (mode & MK_FILE_READ) {
-        if (((target.st_mode & S_IRUSR) && target.st_uid == EUID) ||
-            ((target.st_mode & S_IRGRP) && target.st_gid == EGID) ||
-            (target.st_mode & S_IROTH)) {
+        if (access(path,R_OK)==0) {
             f_info->read_access = MK_TRUE;
         }
     }
 
     /* Checking execution */
     if (mode & MK_FILE_EXEC) {
-        if ((target.st_mode & S_IXUSR && target.st_uid == EUID) ||
-            (target.st_mode & S_IXGRP && target.st_gid == EGID) ||
-            (target.st_mode & S_IXOTH)) {
+        if (access(path,X_OK)==0) {
             f_info->exec_access = MK_TRUE;
         }
     }
